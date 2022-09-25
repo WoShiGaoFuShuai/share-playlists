@@ -37,7 +37,7 @@ Is there a difference? Just a little bit.
 
 - After user signs in, he will be redirected into "Create Playlists" page, because for now he has no created playlists.
 
-![after-sign-in](git_images/after-sign-in.jpg)
+![after-sign-in](git_images/after-sing-in.jpg)
 
 - After user logins in, he will be redirected into "My Playlists" page, because I would assume a user already has some playlists and want to modify / delete them;
 
