@@ -1,25 +1,64 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import HomeView from "../views/HomeView.vue";
+import Login from "../views/auth/Login.vue";
+import Signup from "../views/auth/Signup.vue";
+import CreatePlaylists from "../views/playlists/CreatePlaylists.vue";
+import PlaylistDetails from "../views/playlists/PlaylistDetails.vue";
+import UserPlaylists from "../views/playlists/UserPlaylists.vue";
+import { projectAuth } from "@/firebase/config";
+import store from "@/store";
+
+const requireAuth = (to, from, next) => {
+  const user = projectAuth.currentUser;
+  if (!user) {
+    next({ name: "Login" });
+  } else {
+    store.dispatch("updateUserAction", user);
+    next();
+  }
+};
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path: "/",
+    name: "Home",
+    component: HomeView,
+    beforeEnter: requireAuth,
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+    path: "/login",
+    name: "Login",
+    component: Login,
+  },
+  {
+    path: "/signup",
+    name: "Signup",
+    component: Signup,
+  },
+  {
+    path: "/playlists/create",
+    name: "CreatePlaylists",
+    component: CreatePlaylists,
+    beforeEnter: requireAuth,
+  },
+  {
+    path: "/playlists/:playlistId",
+    name: "PlaylistDetails",
+    component: PlaylistDetails,
+    beforeEnter: requireAuth,
+    props: true,
+  },
+  {
+    path: "/playlists/",
+    name: "UserPlaylists",
+    component: UserPlaylists,
+    beforeEnter: requireAuth,
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

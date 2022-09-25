@@ -1,18 +1,36 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home container">
+    <p>Homepage</p>
+
+    <div v-if="documents">
+      <ListView :playlists="documents" />
+    </div>
+    <div v-if="error">{{ error }}</div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import ListView from "@/components/ListView.vue";
+import getCollection from "@/composables/getCollection";
 
 export default {
-  name: 'HomeView',
+  name: "HomeView",
   components: {
-    HelloWorld
-  }
-}
+    ListView,
+  },
+  setup() {
+    //COMPOSABLES
+    const { error, documents } = getCollection("playlists");
+
+    return { error, documents };
+  },
+};
 </script>
+
+<style scoped>
+.home {
+  margin-top: 50px;
+  text-align: left;
+}
+</style>
